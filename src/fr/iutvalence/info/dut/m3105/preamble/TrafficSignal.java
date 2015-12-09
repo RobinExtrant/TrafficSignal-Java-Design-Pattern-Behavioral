@@ -1,32 +1,30 @@
 package fr.iutvalence.info.dut.m3105.preamble;
 
-public class TrafficSignal extends Thread
+public class TrafficSignal extends Thread implements TrafficSignalInterface
 {
-	private final static int BUTTON_THRESHOLD_IN_SECONDS = 2;
-	
-	private TrafficSignalState state;
-	private int stateSecondsRemaining; 
+	private StateSignal stateSignal;
 	
 	public TrafficSignal()
 	{
 		super();
-		this.switchToState(TrafficSignalState.GREEN);
+		this.switchToState(new Green());
 	}
 
 	public void pressButton()
 	{
-		System.out.println("Button pressed!");
-		System.out.flush();
-		switch (this.state)
-		{
-			case ORANGE: 
-			case RED: return;
-			case GREEN:
-			{
-				if (this.stateSecondsRemaining > BUTTON_THRESHOLD_IN_SECONDS)
-					this.stateSecondsRemaining = BUTTON_THRESHOLD_IN_SECONDS;					
-			}
-		}
+		this.stateSignal.pressButton(this);
+//		System.out.println("Button pressed!");
+//		System.out.flush();
+//		switch (this.stateSignal)
+//		{
+//			case ORANGE: 
+//			case RED: return;
+//			case GREEN:
+//			{
+//				if (this.stateSecondsRemaining > BUTTON_THRESHOLD_IN_SECONDS)
+//					this.stateSecondsRemaining = BUTTON_THRESHOLD_IN_SECONDS;					
+//			}
+//		}
 	}
 	
 	public void run()
@@ -45,33 +43,33 @@ public class TrafficSignal extends Thread
 		}
 	}
 
-	private void secondEllapsed()
+	public void secondEllapsed()
 	{
-		this.stateSecondsRemaining--;
-		System.out.println(this.stateSecondsRemaining);
-		System.out.flush();
-		if (this.stateSecondsRemaining == 0)
-		{
-			switch(this.state)
-			{
-				case GREEN: 
-					this.switchToState(TrafficSignalState.ORANGE);
-					break;
-				case ORANGE: 
-					this.switchToState(TrafficSignalState.RED);
-					break;
-				case RED: 
-					this.switchToState(TrafficSignalState.GREEN);
-					break;
-			}
-		}	
+		this.stateSignal.secondEllapsed(this);
+//		this.stateSecondsRemaining--;
+//		System.out.println(this.stateSecondsRemaining);
+//		System.out.flush();
+//		if (this.stateSecondsRemaining == 0)
+//		{
+//			switch(this.state)
+//			{
+//				case GREEN: 
+//					this.switchToState(TrafficSignalState.ORANGE);
+//					break;
+//				case ORANGE: 
+//					this.switchToState(TrafficSignalState.RED);
+//					break;
+//				case RED: 
+//					this.switchToState(TrafficSignalState.GREEN);
+//					break;
+//			}
+//		}	
 	}
 
-	private void switchToState(TrafficSignalState state)
+	private void switchToState(StateSignal state)
 	{
 		System.out.println("Traffic signal turns "+state);
 		System.out.flush();
-		this.state = state;
-		this.stateSecondsRemaining = this.state.getDurationInSeconds();		
+		this.stateSignal = state;		
 	}
 }
