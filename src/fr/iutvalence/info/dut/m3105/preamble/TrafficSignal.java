@@ -35,6 +35,7 @@ public class TrafficSignal extends Thread implements TrafficSignalInterface
 			{
 				Thread.sleep(1000);
 				this.secondEllapsed();
+				System.out.println(this.stateSignal.getRemainTime());
 			}
 			catch (InterruptedException e)
 			{
@@ -66,9 +67,9 @@ public class TrafficSignal extends Thread implements TrafficSignalInterface
 //		}	
 	}
 
-	private void switchToState(StateSignal state)
+	public void switchToState(StateSignal state)
 	{
-		System.out.println("Traffic signal turns "+state);
+		System.out.println("Traffic signal turns to "+state);
 		System.out.flush();
 		this.stateSignal = state;		
 	}

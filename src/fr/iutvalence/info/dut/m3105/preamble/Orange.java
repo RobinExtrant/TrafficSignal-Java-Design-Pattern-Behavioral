@@ -2,11 +2,29 @@ package fr.iutvalence.info.dut.m3105.preamble;
 
 public class Orange extends StateSignal
 {
+	private static final int ConstantOrange = 2;
+	private int remainTime;
 
+	public int getRemainTime() {
+		return remainTime;
+	}
+
+	public Orange()
+	{
+		this.remainTime=ConstantOrange;
+	}
+	
 	@Override
 	public void secondEllapsed(TrafficSignal TS)
 	{
-		// TODO Auto-generated method stub
+		if (this.remainTime==0)
+		{
+			TS.switchToState(new Red());
+		}
+		else
+		{
+			this.remainTime-=1;
+		}
 		
 	}
 
@@ -16,4 +34,8 @@ public class Orange extends StateSignal
 		//action vide//
 	}
 
+	@Override
+	public String toString() {
+		return "Orange";
+	}
 }
